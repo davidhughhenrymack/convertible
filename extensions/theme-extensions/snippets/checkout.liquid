@@ -1,0 +1,26 @@
+
+<script>
+  
+  const API_BASE = "https://us-central1-unicron-364ec.cloudfunctions.net/index";
+
+  // Load customerId from local storage and if it does not exist create it
+  const customerId = localStorage.getItem('customerId') || self.crypto.randomUUID();
+  localStorage.setItem('customerId', customerId);
+  
+  fetch(`${API_BASE}/track`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        customerId,
+        event: 'View order confirmed',
+        revenue: {{ total_price | money_without_currency }},
+        currency: {{currency}},
+        properties: {
+          orderId: {{order_number}}
+        }
+      }),
+    });
+  
+</script>

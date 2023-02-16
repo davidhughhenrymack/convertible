@@ -1,0 +1,38 @@
+<pdp-experiment>
+  <div class="pdp-loader" style="padding-top: 20px;">
+    <div style="border-radius: 2px; width: 400px; height: 300px;" class="loading-box"> &nbsp;</div>
+  </div>
+  <div id="pdp-container" style="display:none">
+    <h2>{{ product.title }}</h2>
+    {{ product.description }}
+
+    {% for media in product.media %}
+      {% render 'media', media: media %}
+    {% endfor %}
+
+    <form action="/cart/add" method="post" enctype="multipart/form-data">
+      <select name="id">
+        {% for variant in product.variants %}
+          {% if variant.available == true %}
+            <option value="{{variant.id}}">{{ variant.title }} for {{ variant.price | money_with_currency }}</option>
+          {% else %}
+            <option disabled="disabled">{{ variant.title }} - sold out!</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <input type="submit" name="add" id="add" value="Add to Cart" class="button">
+    </form>
+  </div>
+</pdp-experiment>
+
+{% schema %}
+{
+  "name": "Micro PDP (experiment)",
+  "target": "section",
+  "stylesheet": "pdp-experiment.css",
+  "javascript": "pdp-experiment.js",
+  "settings": []
+}
+{% endschema %}
+
+{% comment %} { "label": "Percent of traffic to show to", "id": "pct_show", "type": "number", "default": 50 } {% endcomment %}

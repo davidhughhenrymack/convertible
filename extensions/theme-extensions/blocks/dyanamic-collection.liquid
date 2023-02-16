@@ -1,0 +1,55 @@
+{% comment %} https://github.com/Shopify/dawn/blob/main/sections/main-collection-product-grid.liquid {% endcomment %}
+
+<h1>{{ collection.title }}</h1>
+
+<div class="product-grid-container" id="ProductGridContainer">
+  
+      <div class="collection">
+        <div class="loading-overlay gradient"></div>
+
+        <ul
+          id="product-grid"
+          data-id="{{ section.id }}"
+          class="grid"
+        >
+          {%- for product in collection.products -%}
+            
+            <li class="grid__item">
+              <div class="card-wrapper product-card-wrapper underline-links-hover">
+
+                <a href="{{ product.url }}">
+                <h3> {{ product.title }} </h3>
+                </a>
+
+                <a href="{{ product.url }}">
+                {% for media in product.media %}
+                  {% render 'media', media: media %}
+                {% endfor %}
+              </a>
+                {% comment %} <img src="{{ product | image_url: width: 450 }}"> {% endcomment %}
+
+                <div class="price">
+                {{product.price | money}}
+                </div>
+
+          
+
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      
+      </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Dynamic collection",
+    "target": "section",
+    "stylesheet": "dynamic-collection.css",
+    "javascript": "dynamic-collection.js",
+    "settings": [
+        { "label": "Number of products", "id": "n_products", "type": "number", "default": 5 }
+    ]
+  }
+{% endschema %}
